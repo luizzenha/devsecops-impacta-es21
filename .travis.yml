@@ -16,6 +16,11 @@ install:
 script:                                                                                                                                                                                                  
   - pytest -v test.py
 
+# Defini o script de Teste que deve rodar toda vez que o código for alterado.                                                                                                                            
+script:                                                                                                                                                                                                  
+  - python -m unittest -v test || travis_terminate 1;
+  - sonar-scanner || travis_terminate 1;
+
 # Definir o Deploy no Heroku
 deploy:
   provider: heroku
@@ -24,3 +29,8 @@ deploy:
   app: devsecops-impacta-es21
   on:
       branch: main
+
+addons:
+  sonarcloud:
+    organization: luizzenha-1
+    token: ${SONAR_TOKEN}
